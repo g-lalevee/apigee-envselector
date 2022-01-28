@@ -12,7 +12,7 @@ Targeting a group of environments, envselector dynamically select in which attac
 ---
 **Notes**
 
-- apigee-eenvselector requires apigee-sacckmeesser. See [GitHub apigee/devrel/apigee-sackmesser](https://github.com/apigee/devrel/tree/main/tools/apigee-sackmesser).
+- apigee-eenvselector requires apigee-sackmesser. See [GitHub apigee/devrel/apigee-sackmesser](https://github.com/apigee/devrel/tree/main/tools/apigee-sackmesser).
 
 - apigee-envselector works only with Apigee X and Apigee hybrid.
 
