@@ -1,9 +1,5 @@
 # apigee-envselector
 
-
-Apigee X/hybrid has a lim
-The Apigee Environment Selector lets you find the nevironment 
-
 On Apigee X/hybrid, to work around the limits of the number of deployable proxies per environment, you can associate several environments to the same environment group. See [About environments and environment groups](https://cloud.google.com/apigee/docs/api-platform/fundamentals/environments-overview).
 
 Targeting a group of environments, envselector allows you to dynamically select in which attached environment to deploy your proxies.
