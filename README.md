@@ -45,6 +45,7 @@ Example:
 
 ```shell
 $ TOKEN=$(gcloud auth print-access-token)
+
 $ envSelector fulfill -o myOrg -g myGroup -t $TOKEN --debug
 
 [DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fulfill"...
