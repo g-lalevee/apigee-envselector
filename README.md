@@ -41,7 +41,7 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
     --debug, show verbose debug output
 ```
 
-Example:
+## Example:
 
 ```shell
 $ TOKEN=$(gcloud auth print-access-token)
