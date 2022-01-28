@@ -9,7 +9,14 @@ Targeting a group of environments, envselector dynamically select in which attac
 - fulfill: deploy up to 50 proxies in the first environment, then move to the next one
 - spread: deploy proxies uniformly to all environment in the given environment group 
 
-Please note that apigee-envselector works only with Apigee X and Apigee hybrid.
+---
+**Notes**
+
+apigee-eenvselector requires apigee-sacckmeesser. See [GitHub apigee/devrel/apigee-sackmesser](https://github.com/apigee/devrel/tree/main/tools/apigee-sackmesser).
+
+apigee-envselector works only with Apigee X and Apigee hybrid.
+
+---
 
 To use it as a CLI you can add it to your path:
 
@@ -24,7 +31,7 @@ $ envselector help
 
 Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
-  Strategies:
+  STRATEGY:
     fulfilll
     spread
   Options:

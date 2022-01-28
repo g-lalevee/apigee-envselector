@@ -18,7 +18,7 @@ print_usage() {
     cat << EOF
 Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
-  Strategies:
+  STRATEGY:
     fulfilll
     spread
   Options:
