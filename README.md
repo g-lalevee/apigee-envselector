@@ -44,7 +44,7 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
 Example:
 
 ```shell
-envSelector spread -o myOrg -g myGroup -t $TOKEN --debug
+envSelector fulfill -o myOrg -g myGroup -t $TOKEN --debug
 
 [DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fulfill"...
 [DEBUG] dev3 -> 0
