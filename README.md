@@ -47,7 +47,6 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
 $ TOKEN=$(gcloud auth print-access-token)
 
 $ envSelector fulfill -o myOrg -g myGroup -t $TOKEN --debug
-
 [DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fulfill"...
 [DEBUG] dev3 -> 0
 [DEBUG] dev2 -> 0
