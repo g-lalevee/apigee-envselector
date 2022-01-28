@@ -40,3 +40,18 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
     -t,--token, GCP token 
     --debug, show verbose debug output
 ```
+
+Example:
+
+```shell
+envSelector spread -o myOrg -g myGroup -t $TOKEN --debug
+
+[DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "spread"...
+[DEBUG] local-xtof -> 0
+[DEBUG] dev -> 3
+[DEBUG] default-dev -> 42
+[DEBUG] configurable-dev -> 0
+[DEBUG] Selected environment: configurable-dev
+
+configurable-dev
+```
