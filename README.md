@@ -25,11 +25,11 @@ $ envselector help
 Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   Strategies:
-     fulfill 
-     spread
+    fulfilll
+    spread
   Options:
-  -g,--envgroup, Apigee environment group name
-  -o,--organization, Apigee organization name
-  -t,--token, GCP token 
-  --debug, show verbose debug output
+    -g,--envgroup, Apigee environment group name
+    -o,--organization, Apigee organization name
+    -t,--token, GCP token 
+    --debug, show verbose debug output
 ```
