@@ -33,7 +33,7 @@ TOKEN=$(gcloud auth print-access-token)
 STRATEGY="$1"
 
 
-if [ -z "$STRATEGY" ]; then
+if [ -z "$STRATEGY" ] || [ "$STRATEGY" == "help" ]; then
     print_usage
     exit 0
 elif [ -z "$STRATEGY" ] || [ "$STRATEGY" != "fullfill" ] && [ "$STRATEGY" != "spread" ]; then
@@ -61,7 +61,6 @@ while [ "$#" -gt 0 ]; do
     *) posArgs+=("$1"); shift 1;;
   esac
 done
-
 
 logdebug "Selecting target environment to deploy proxy in environment attached to environment group \"$ENV_GROUP\", with strategy \"$STRATEGY\"..."
 
