@@ -46,12 +46,11 @@ Example:
 ```shell
 envSelector spread -o myOrg -g myGroup -t $TOKEN --debug
 
-[DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "spread"...
-[DEBUG] local-xtof -> 0
-[DEBUG] dev -> 3
-[DEBUG] default-dev -> 42
-[DEBUG] configurable-dev -> 0
-[DEBUG] Selected environment: configurable-dev
+[DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fulfill"...
+[DEBUG] dev3 -> 0
+[DEBUG] dev2 -> 0
+[DEBUG] dev1 -> 42
+[DEBUG] Selected environment: dev1
 
 configurable-dev
 ```
