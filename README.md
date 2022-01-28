@@ -54,4 +54,7 @@ $ envSelector fulfill -o myOrg -g myGroup -t $TOKEN --debug
 [DEBUG] Selected environment: dev1
 
 configurable-dev
+
+$ envSelector spread -o myOrg -g myGroup -t $TOKEN 
+dev2
 ```
