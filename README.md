@@ -53,8 +53,7 @@ $ envSelector fulfill -o myOrg -g myGroup -t $TOKEN --debug
 [DEBUG] dev2 -> 0
 [DEBUG] dev1 -> 42
 [DEBUG] Selected environment: dev1
-
-configurable-dev
+dev1
 
 $ envSelector spread -o myOrg -g myGroup -t $TOKEN 
 dev2
