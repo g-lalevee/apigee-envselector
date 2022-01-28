@@ -25,7 +25,7 @@ $ envselector help
 Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   Strategies:
-     fullfill ()
+     fulfill 
      spread
   Options:
   -g,--envgroup, Apigee environment group name
