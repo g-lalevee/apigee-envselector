@@ -4,10 +4,11 @@ On Apigee X/hybrid, to work around the limit of the number of deployable proxies
 
 Targeting a group of environments, envselector dynamically select in which attached environment to deploy your proxies.
 
-2 strategies allow you to select the target environment:
+3 strategies allow you to select the target environment:
 
 - fill-first: deploy up to 50 proxies in the first environment, then move to the next one
 - spread-out: deploy proxies uniformly to all environment in the given environment group 
+- update:  retrieve the environment in which the latest given proxy release was deployed
 
 ---
 **Notes**
@@ -34,9 +35,11 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   STRATEGY:
     fill-first
     spread-out
+    update
   Options:
     -g,--envgroup, Apigee environment group name
     -o,--organization, Apigee organization name
+    -p,--proxy, Apigee proxy name (update strategy only)
     -t,--token, GCP token 
     --debug, show verbose debug output
     --debug-all, show verbose debug output, including Sackmesser
