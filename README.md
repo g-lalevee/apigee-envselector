@@ -6,7 +6,7 @@ Targeting a group of environments, envselector dynamically select in which attac
 
 2 strategies allow you to select the target environment:
 
-- fulfill: deploy up to 50 proxies in the first environment, then move to the next one
+- fill-first: deploy up to 50 proxies in the first environment, then move to the next one
 - spread: deploy proxies uniformly to all environment in the given environment group 
 
 ---
@@ -32,7 +32,7 @@ $ envselector help
 Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   STRATEGY:
-    fulfilll
+    fill-firstl
     spread
   Options:
     -g,--envgroup, Apigee environment group name
@@ -47,8 +47,8 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
 ```shell
 $ TOKEN=$(gcloud auth print-access-token)
 
-$ envSelector fulfill -o myOrg -g myGroup -t $TOKEN --debug
-[DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fulfill"...
+$ envSelector fill-first -o myOrg -g myGroup -t $TOKEN --debug
+[DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fill-first"...
 [DEBUG] dev3 -> 0
 [DEBUG] dev2 -> 0
 [DEBUG] dev1 -> 42
