@@ -20,7 +20,7 @@ Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   STRATEGY:
     fill-first
-    spread
+    spread-out
   Options:
     -g,--envgroup, Apigee environment group name
     -o,--organization, Apigee organization name
@@ -37,8 +37,8 @@ STRATEGY="$1"
 if [ -z "$STRATEGY" ] || [ "$STRATEGY" == "help" ]; then
     print_usage
     exit 0
-elif [ -z "$STRATEGY" ] || [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread" ]; then
-#elif [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread" ]; then
+elif [ -z "$STRATEGY" ] || [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread-out" ]; then
+#elif [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread-out" ]; then
     logerror "Please provide a valid strategy."
     exit 1
 fi
@@ -92,13 +92,13 @@ case "$STRATEGY" in
       SELECTED=$(echo -e $DEPLOYMENT_LIST |  sort -k2nr -k1 | head -n 1  | cut -f 1 -d " ")
       logdebug "\nSelected environment: $SELECTED"
       ;;
-  spread)
+  spread-out)
       # select environment having min number of deployed proxy, less than 50
       SELECTED=$(echo -e $DEPLOYMENT_LIST |  sort -k2n -k1 | head -n 1 | cut -f 1 -d " ")
       logdebug "\nSelected environment: $SELECTED"
       ;;
   *)
-      echo $"Strategy: $0 {fill-first|spread}"
+      echo $"Strategy: $0 {fill-first|spread-out}"
       exit 1
 esac
 

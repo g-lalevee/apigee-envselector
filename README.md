@@ -7,7 +7,7 @@ Targeting a group of environments, envselector dynamically select in which attac
 2 strategies allow you to select the target environment:
 
 - fill-first: deploy up to 50 proxies in the first environment, then move to the next one
-- spread: deploy proxies uniformly to all environment in the given environment group 
+- spread-out: deploy proxies uniformly to all environment in the given environment group 
 
 ---
 **Notes**
@@ -32,8 +32,8 @@ $ envselector help
 Apigee Environment Selector.
 usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   STRATEGY:
-    fill-firstl
-    spread
+    fill-first
+    spread-out
   Options:
     -g,--envgroup, Apigee environment group name
     -o,--organization, Apigee organization name
@@ -55,6 +55,6 @@ $ envSelector fill-first -o myOrg -g myGroup -t $TOKEN --debug
 [DEBUG] Selected environment: dev1
 dev1
 
-$ envSelector spread -o myOrg -g myGroup -t $TOKEN 
+$ envSelector spread-out -o myOrg -g myGroup -t $TOKEN 
 dev2
 ```
