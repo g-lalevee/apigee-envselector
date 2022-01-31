@@ -21,9 +21,11 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
   STRATEGY:
     fill-first
     spread-out
+    update
   Options:
     -g,--envgroup, Apigee environment group name
     -o,--organization, Apigee organization name
+    -p,--proxy, Apigee proxy name (update strategy only)
     -t,--token, GCP token 
     --debug, show verbose debug output
     --debug-all, show verbose debug output, including Sackmesser
@@ -33,12 +35,10 @@ EOF
 TOKEN=$(gcloud auth print-access-token)
 STRATEGY="$1"
 
-
 if [ -z "$STRATEGY" ] || [ "$STRATEGY" == "help" ]; then
     print_usage
     exit 0
-elif [ -z "$STRATEGY" ] || [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread-out" ]; then
-#elif [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread-out" ]; then
+elif [ -z "$STRATEGY" ] || [ "$STRATEGY" != "fill-first" ] && [ "$STRATEGY" != "spread-out" ] && [ "$STRATEGY" != "update" ]; then
     logerror "Please provide a valid strategy."
     exit 1
 fi
@@ -51,12 +51,14 @@ while [ "$#" -gt 0 ]; do
   case "$1" in
     -g) export ENV_GROUP="$2"; shift 2;;
     -o) export APIGEE_ORG="$2"; shift 2;;
+    -p) export APIGEE_PROXY="$2"; shift 2;;
     -t) export TOKEN="$2"; shift 2;;
     
     --debug)  debug="T"; shift 1;;
     --debug-all)  export debug="T"; shift 1;;
     --envgroup) export ENV_GROUP="${2}"; shift 2;;
     --organization) export APIGEE_ORG="${2}"; shift 2;;
+    --proxy) export APIGEE_PROXY="$2"; shift 2;;
     --token) export TOKEN="${2}"; shift 2;;
 
     -*) logfatal "unknown option: $1" >&2; exit 1;;
@@ -64,19 +66,27 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-logdebug "Selecting target environment to deploy proxy in environment attached to environment group \"$ENV_GROUP\", with strategy \"$STRATEGY\"..."
+
+if [[ -z "$APIGEE_PROXY" && "$STRATEGY" = "update" ]]; then
+    logfatal "required -p (Apigee proxy name) with strategy update"
+    exit 1
+fi
+
+
+logdebug "Selecting target environment in list of environments attached to environment group \"$ENV_GROUP\", with strategy \"$STRATEGY\"..."
 
 # Retrieve environment list from environment group name parameter
 ENV_LIST=$(sackmesser list --googleapi -t "$TOKEN" organizations/$APIGEE_ORG/envgroups/$ENV_GROUP/attachments | jq -r .environmentGroupAttachments[].environment)
 if [ -z "$ENV_LIST" ]; then
   exit 1
 fi
+
 # Retrieve proxy deployment number for each environment
 for ENV in $ENV_LIST
 do
     DEPLOYMENT_NUMBER=$(sackmesser list --googleapi -t "$TOKEN" organizations/$APIGEE_ORG/environments/$ENV/deployments | jq ". | length")
     if [ $DEPLOYMENT_NUMBER -lt 50 ]; then
-      logdebug "$ENV -> $DEPLOYMENT_NUMBER"
+      logdebug "   $ENV -> $DEPLOYMENT_NUMBER"
       DEPLOYMENT_LIST="$DEPLOYMENT_LIST$ENV $DEPLOYMENT_NUMBER\n"
     else
       logdebug "$ENV -> $DEPLOYMENT_NUMBER *"
@@ -85,8 +95,29 @@ done
 # remove last line feed
 DEPLOYMENT_LIST=$(echo $DEPLOYMENT_LIST | sed 's/..$//')
 
+logdebug ""
 
 case "$STRATEGY" in
+  update)
+      logdebug "Searching for the environment in which the latest proxy release was deployed..."
+      LAST_RELEASE=0
+      LAST_RELEASE_ENVIRONMENT=""
+      for ENV in $(echo -e $DEPLOYMENT_LIST | cut -f 1 -d " ")
+      do
+        ENV_RELEASE=$(sackmesser list --googleapi -t "$TOKEN" organizations/$APIGEE_ORG/apis/$APIGEE_PROXY/deployments | jq -r  ".deployments[] | select(.environment== \"$ENV\").revision") 
+        if ! [ -z $ENV_RELEASE ]; then
+          logdebug "   $ENV -> $APIGEE_PROXY, release $ENV_RELEASE"
+          if [ $ENV_RELEASE -gt $LAST_RELEASE ]; then
+            LAST_RELEASE_ENVIRONMENT=$ENV
+            LAST_RELEASE=$ENV_RELEASE
+          fi
+        else
+          logdebug "   $ENV -> $APIGEE_PROXY not deployed"
+        fi
+      done
+      logdebug "$APIGEE_PROXY last release ($LAST_RELEASE) is deployed in $LAST_RELEASE_ENVIRONMENT"
+      SELECTED=$LAST_RELEASE_ENVIRONMENT
+      ;;
   fill-first)
       # select environment having max number of deployed proxy, less than 50
       SELECTED=$(echo -e $DEPLOYMENT_LIST |  sort -k2nr -k1 | head -n 1  | cut -f 1 -d " ")
@@ -101,6 +132,5 @@ case "$STRATEGY" in
       echo $"Strategy: $0 {fill-first|spread-out}"
       exit 1
 esac
-
 echo $SELECTED
 

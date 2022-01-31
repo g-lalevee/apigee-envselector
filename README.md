@@ -45,16 +45,32 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
 ## Example:
 
 ```shell
+
 $ TOKEN=$(gcloud auth print-access-token)
 
 $ envSelector fill-first -o myOrg -g myGroup -t $TOKEN --debug
-[DEBUG] Selecting target environment to deploy proxy in environment attached to environment group "myGroup", with strategy "fill-first"...
-[DEBUG] dev3 -> 0
-[DEBUG] dev2 -> 0
-[DEBUG] dev1 -> 42
+[DEBUG] Selecting target environment in list of environments attached to environment group "myGroup", with strategy "fill-first"...
+[DEBUG]    dev3 -> 0
+[DEBUG]    dev2 -> 0
+[DEBUG]    dev1 -> 42
+[DEBUG]
 [DEBUG] Selected environment: dev1
 dev1
 
 $ envSelector spread-out -o myOrg -g myGroup -t $TOKEN 
 dev2
+
+$ envSelector update -o myOrg -g myGroup -p myProxy -t $TOKEN --debug
+[DEBUG] Selecting target environment in list of environments attached to environment group "myGroup", with strategy "update"...
+[DEBUG]    dev3 -> 0
+[DEBUG]    dev2 -> 0
+[DEBUG]    dev1 -> 42
+[DEBUG] 
+[DEBUG] Searching for the environment in which the latest proxy release was deployed...
+[DEBUG]    dev3 -> myProxy not deployed
+[DEBUG]    dev2 -> myProxy not deployed
+[DEBUG]    dev1 -> myProxy, release 3
+[DEBUG] myProxy last release (3) is deployed in dev1
+dev1
+
 ```
