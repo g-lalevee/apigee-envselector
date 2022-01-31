@@ -39,6 +39,7 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
     -o,--organization, Apigee organization name
     -t,--token, GCP token 
     --debug, show verbose debug output
+    --debug-all, show verbose debug output, including Sackmesser
 ```
 
 ## Example:

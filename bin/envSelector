@@ -26,6 +26,7 @@ usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
     -o,--organization, Apigee organization name
     -t,--token, GCP token 
     --debug, show verbose debug output
+    --debug-all, show verbose debug output, including Sackmesser
 EOF
 }
 
@@ -53,6 +54,7 @@ while [ "$#" -gt 0 ]; do
     -t) export TOKEN="$2"; shift 2;;
     
     --debug)  debug="T"; shift 1;;
+    --debug-all)  export debug="T"; shift 1;;
     --envgroup) export ENV_GROUP="${2}"; shift 2;;
     --organization) export APIGEE_ORG="${2}"; shift 2;;
     --token) export TOKEN="${2}"; shift 2;;
@@ -66,9 +68,10 @@ logdebug "Selecting target environment to deploy proxy in environment attached t
 
 # Retrieve environment list from environment group name parameter
 ENV_LIST=$(sackmesser list --googleapi -t "$TOKEN" organizations/$APIGEE_ORG/envgroups/$ENV_GROUP/attachments | jq -r .environmentGroupAttachments[].environment)
-
+if [ -z "$ENV_LIST" ]; then
+  exit 1
+fi
 # Retrieve proxy deployment number for each environment
-NEWLINE=$'\n'
 for ENV in $ENV_LIST
 do
     DEPLOYMENT_NUMBER=$(sackmesser list --googleapi -t "$TOKEN" organizations/$APIGEE_ORG/environments/$ENV/deployments | jq ". | length")
