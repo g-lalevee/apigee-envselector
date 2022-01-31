@@ -8,7 +8,7 @@ Targeting a group of environments, envselector dynamically select in which attac
 
 - fill-first: deploy up to 50 proxies in the first environment, then move to the next one
 - spread-out: deploy proxies uniformly to all environment in the given environment group 
-- update:  retrieve the environment in which the latest given proxy release was deployed
+- update: retrieve the environment in which the latest given proxy release was deployed
 
 ---
 **Notes**
