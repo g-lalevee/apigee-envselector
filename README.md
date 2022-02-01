@@ -67,8 +67,8 @@ dev2
 
 [deploy myProxy in dev2]
 
-$  ./envSelector spread-out -o myOrg -g myOrg -p myProxy -t $TOKEN --debug 
-[DEBUG] Selecting target environment in list of environments attached to environment group "dev", with strategy "spread-out"...
+$  ./envSelector spread-out -o myOrg -g myGroup -p myProxy -t $TOKEN --debug 
+[DEBUG] Selecting target environment in list of environments attached to environment group "myGroup", with strategy "spread-out"...
 [DEBUG] Getting deployments/environment...
 [DEBUG]    dev3 -> 0
 [DEBUG]    dev2 -> 0
