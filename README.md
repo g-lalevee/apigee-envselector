@@ -4,11 +4,13 @@ On Apigee X/hybrid, to work around the limit of the number of deployable proxies
 
 Targeting a group of environments, envselector dynamically select in which attached environment to deploy your proxies.
 
-3 strategies allow you to select the target environment:
+2 strategies allow you to select the target environment:
 
 - fill-first: deploy up to 50 proxies in the first environment, then move to the next one
 - spread-out: deploy proxies uniformly to all environment in the given environment group 
-- update: retrieve the environment in which the latest given proxy release was deployed
+
+If you add --proxy option, envselector will try first to retrieve the environment in which the latest given proxy release was deployed, to reuse this environment.
+
 
 ---
 **Notes**
@@ -30,16 +32,15 @@ PATH="$PATH:$PWD/bin"
 ```text
 $ envselector help
 
-Apigee Environment Selector.
-usage: envselector STRATEGY -e ENV -o ORG [-t TOKEN]
+pigee Environment Selector.
+usage: envselector STRATEGY -e ENV -o ORG [-p PROXY_NAME] [-t TOKEN] [options]
   STRATEGY:
     fill-first
     spread-out
-    update
   Options:
     -g,--envgroup, Apigee environment group name
     -o,--organization, Apigee organization name
-    -p,--proxy, Apigee proxy name (update strategy only)
+    -p,--proxy, Apigee proxy name to check deployment
     -t,--token, GCP token 
     --debug, show verbose debug output
     --debug-all, show verbose debug output, including Sackmesser
@@ -53,6 +54,7 @@ $ TOKEN=$(gcloud auth print-access-token)
 
 $ envSelector fill-first -o myOrg -g myGroup -t $TOKEN --debug
 [DEBUG] Selecting target environment in list of environments attached to environment group "myGroup", with strategy "fill-first"...
+[DEBUG] Getting deployments/environment...
 [DEBUG]    dev3 -> 0
 [DEBUG]    dev2 -> 0
 [DEBUG]    dev1 -> 42
@@ -63,17 +65,22 @@ dev1
 $ envSelector spread-out -o myOrg -g myGroup -t $TOKEN 
 dev2
 
-$ envSelector update -o myOrg -g myGroup -p myProxy -t $TOKEN --debug
-[DEBUG] Selecting target environment in list of environments attached to environment group "myGroup", with strategy "update"...
+[deploy myProxy in dev2]
+
+$  ./envSelector spread-out -o myOrg -g myOrg -p myProxy -t $TOKEN --debug 
+[DEBUG] Selecting target environment in list of environments attached to environment group "dev", with strategy "spread-out"...
+[DEBUG] Getting deployments/environment...
 [DEBUG]    dev3 -> 0
 [DEBUG]    dev2 -> 0
 [DEBUG]    dev1 -> 42
 [DEBUG] 
 [DEBUG] Searching for the environment in which the latest proxy release was deployed...
 [DEBUG]    dev3 -> myProxy not deployed
-[DEBUG]    dev2 -> myProxy not deployed
-[DEBUG]    dev1 -> myProxy, release 3
-[DEBUG] myProxy last release (3) is deployed in dev1
-dev1
+[DEBUG]    dev2 -> myProxy, release 3
+[DEBUG]    dev1 -> myProxy not deployed
+[DEBUG] myProxy last release (3) is deployed in dev2
+[DEBUG] 
+[DEBUG] Selected environment: dev2
+dev2
 
 ```
