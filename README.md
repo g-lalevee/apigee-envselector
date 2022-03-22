@@ -1,5 +1,9 @@
 # apigee-envselector
 
+**This is not an official Google product.**<BR>This implementation is not an official Google product, nor is it part of an official Google product. Support is available on a best-effort basis via GitHub.
+
+***
+  
 On Apigee X/hybrid, to work around the limit of the number of deployable proxies per environment, you can attach several environments to the same environment group. See [About environments and environment groups](https://cloud.google.com/apigee/docs/api-platform/fundamentals/environments-overview).
 
 Targeting a group of environments, envselector dynamically select in which attached environment to deploy your proxies.
